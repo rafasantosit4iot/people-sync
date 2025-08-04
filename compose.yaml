@@ -1,0 +1,32 @@
+services:
+  frontend:
+    build: ./people-sync-frontend
+    ports:
+      - "4202:4200"
+    volumes:
+      - ./people-sync-frontend:/app
+      - /app/node_modules
+  people-postgres:
+    image: 'postgres:latest'
+    container_name: people-postgres
+    environment:
+      - 'POSTGRES_DB=library'
+      - 'POSTGRES_USER=postgres-user'
+      - 'POSTGRES_PASSWORD=admin'
+    ports:
+      - '5433:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  
+  pgadmin:
+    image: 'dpage/pgadmin4:latest'
+    container_name: people-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=rs7951006@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=123456
+    ports:
+      - '5051:80'
+    depends_on:
+      - people-postgres
+volumes:
+  postgres-data:
