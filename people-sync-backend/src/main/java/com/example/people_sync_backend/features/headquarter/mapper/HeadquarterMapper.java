@@ -34,6 +34,9 @@ public class HeadquarterMapper implements EntityMapper<Headquarter, HeadquarterC
         headquarter.setStreet(headquarterCreateDTO.street());
         headquarter.setNumber(headquarterCreateDTO.number());
 
+        headquarter.setCompany(company);
+        headquarter.setCompany(country);
+
         return headquarter;
     }
 
