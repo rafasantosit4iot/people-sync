@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import com.example.people_sync_backend.features.company.model.Company;
 import com.example.people_sync_backend.features.role.model.Role;
 
 import jakarta.persistence.Column;
@@ -11,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -34,4 +36,7 @@ public class Department {
 
     @OneToMany(mappedBy = "department")
     private Set<Role> roles = new HashSet<>();
+
+    @ManyToMany(mappedBy="departments")
+    private Set<Company> companies;
 }
