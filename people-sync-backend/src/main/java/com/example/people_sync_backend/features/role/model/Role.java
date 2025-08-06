@@ -2,6 +2,7 @@ package com.example.people_sync_backend.features.role.model;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import com.example.people_sync_backend.features.department.model.Department;
 import com.example.people_sync_backend.features.employee.model.Employee;
@@ -30,7 +31,7 @@ import lombok.Setter;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private UUID id;
 
     @Column(nullable = false)
     private String name;
@@ -39,6 +40,6 @@ public class Role {
     @JoinColumn(name = "department_id", referencedColumnName = "id", nullable = false)
     private Department department;
 
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "role")
     private Set<Employee> employees = new HashSet<>();
 }
