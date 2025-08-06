@@ -16,6 +16,8 @@ import com.example.people_sync_backend.features.employee.model.dto.request.Emplo
 import com.example.people_sync_backend.features.employee.model.dto.response.EmployeeResponseDTO;
 import com.example.people_sync_backend.features.employee.model.enums.ContractType;
 import com.example.people_sync_backend.features.employee.model.enums.EmployeeGender;
+import com.example.people_sync_backend.features.role.mapper.RoleSummaryConverter;
+import com.example.people_sync_backend.features.role.model.dto.response.RoleSummaryDTO;
 import com.example.people_sync_backend.shared.interfaces.EntityMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class EmployeeMapper implements EntityMapper<Employee, EmployeeCreateDTO, EmployeeResponseDTO> {
 
     private final CompanySummaryConverter companySummaryConverter;
+    private final RoleSummaryConverter roleSummaryConverter;
 
     @Override
     public Employee toEntity(EmployeeCreateDTO employeeCreateDTO) {
@@ -39,6 +42,9 @@ public class EmployeeMapper implements EntityMapper<Employee, EmployeeCreateDTO,
         employee.setBirthday(employeeCreateDTO.birthday());
         employee.setGender(employeeCreateDTO.gender());
         employee.setActive(employeeCreateDTO.active());
+
+        employee.setCompany(company);
+        employee.setRole(role);
 
         return employee;
     }
@@ -57,8 +63,10 @@ public class EmployeeMapper implements EntityMapper<Employee, EmployeeCreateDTO,
 
         CompanySummaryDTO company = companySummaryConverter.toSummaryDTO(employee.getCompany());
 
+        RoleSummaryDTO role = roleSummaryConverter.toSummaryDTO(employee.getRole());
+
         return new EmployeeResponseDTO(id, name, email, contract, register, pcd, birthday, gender, active,
-                company);
+                company, role);
     }
 
     @Override

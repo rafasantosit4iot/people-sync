@@ -24,7 +24,10 @@ public class EmployeeSummaryConverter implements EntitySummaryConverter<Employee
                 employee.isPcd(),
                 employee.getBirthday(),
                 employee.getGender(),
-                employee.isActive());
+                employee.isActive(),
+                employee.getCompany().getName(),
+                employee.getRole().getName(),
+                employee.getRole().getDepartment().getTitle());
     }
 
     @Override

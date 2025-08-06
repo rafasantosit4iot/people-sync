@@ -1,14 +1,16 @@
 package com.example.people_sync_backend.features.employee.model;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
-
-import javax.management.relation.Role;
 
 import com.example.people_sync_backend.features.company.model.Company;
 import com.example.people_sync_backend.features.employee.model.enums.ContractType;
 import com.example.people_sync_backend.features.employee.model.enums.EmployeeGender;
 import com.example.people_sync_backend.features.employee.model.enums.EmployeeType;
+import com.example.people_sync_backend.features.project.model.Project;
+import com.example.people_sync_backend.features.role.model.Role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +19,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -66,10 +69,14 @@ public class Employee {
     private boolean active;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false)
+    private Company company;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false)
-    private Company company;
+    @ManyToMany(mappedBy="employees")
+    private Set<Project> projects = new HashSet<>();
+
 }
