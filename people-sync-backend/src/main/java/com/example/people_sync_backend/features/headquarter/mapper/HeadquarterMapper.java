@@ -1,11 +1,7 @@
 package com.example.people_sync_backend.features.headquarter.mapper;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.example.people_sync_backend.features.company.mapper.CompanySummaryConverter;
@@ -15,13 +11,13 @@ import com.example.people_sync_backend.features.country.model.dto.response.Count
 import com.example.people_sync_backend.features.headquarter.model.Headquarter;
 import com.example.people_sync_backend.features.headquarter.model.dto.request.HeadquarterCreateDTO;
 import com.example.people_sync_backend.features.headquarter.model.dto.response.HeadquarterResponseDTO;
-import com.example.people_sync_backend.shared.interfaces.EntityMapper;
+import com.example.people_sync_backend.shared.classes.EntityMapper;
 
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class HeadquarterMapper implements EntityMapper<Headquarter, HeadquarterCreateDTO, HeadquarterResponseDTO> {
+public class HeadquarterMapper extends EntityMapper<Headquarter, HeadquarterCreateDTO, HeadquarterResponseDTO> {
 
     private final CompanySummaryConverter companySummaryConverter;
     private final CountrySummaryConverter countrySummaryConverter;
@@ -33,9 +29,6 @@ public class HeadquarterMapper implements EntityMapper<Headquarter, HeadquarterC
         headquarter.setCity(headquarterCreateDTO.city());
         headquarter.setStreet(headquarterCreateDTO.street());
         headquarter.setNumber(headquarterCreateDTO.number());
-
-        headquarter.setCompany(company);
-        headquarter.setCompany(country);
 
         return headquarter;
     }
@@ -51,17 +44,5 @@ public class HeadquarterMapper implements EntityMapper<Headquarter, HeadquarterC
         CountrySummaryDTO country = countrySummaryConverter.toSummaryDTO(headquarter.getCountry());
 
         return new HeadquarterResponseDTO(id, city, street, number, company, country);
-    }
-
-    @Override
-    public Page<HeadquarterResponseDTO> toDTOPageResponse(Page<Headquarter> headquarters) {
-        return headquarters.map(this::toDTOResponse);
-    }
-
-    @Override
-    public List<HeadquarterResponseDTO> toDTOListResponse(Collection<Headquarter> headquarters) {
-        return headquarters.stream()
-                .map(this::toDTOResponse)
-                .collect(Collectors.toList());
     }
 }

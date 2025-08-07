@@ -1,12 +1,9 @@
 package com.example.people_sync_backend.features.employee.mapper;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.example.people_sync_backend.features.company.mapper.CompanySummaryConverter;
@@ -16,18 +13,21 @@ import com.example.people_sync_backend.features.employee.model.dto.request.Emplo
 import com.example.people_sync_backend.features.employee.model.dto.response.EmployeeResponseDTO;
 import com.example.people_sync_backend.features.employee.model.enums.ContractType;
 import com.example.people_sync_backend.features.employee.model.enums.EmployeeGender;
+import com.example.people_sync_backend.features.project.mapper.ProjectSummaryConverter;
+import com.example.people_sync_backend.features.project.model.dto.response.ProjectSummaryDTO;
 import com.example.people_sync_backend.features.role.mapper.RoleSummaryConverter;
 import com.example.people_sync_backend.features.role.model.dto.response.RoleSummaryDTO;
-import com.example.people_sync_backend.shared.interfaces.EntityMapper;
+import com.example.people_sync_backend.shared.classes.EntityMapper;
 
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class EmployeeMapper implements EntityMapper<Employee, EmployeeCreateDTO, EmployeeResponseDTO> {
+public class EmployeeMapper extends EntityMapper<Employee, EmployeeCreateDTO, EmployeeResponseDTO> {
 
     private final CompanySummaryConverter companySummaryConverter;
     private final RoleSummaryConverter roleSummaryConverter;
+    private final ProjectSummaryConverter projectSummaryConverter;
 
     @Override
     public Employee toEntity(EmployeeCreateDTO employeeCreateDTO) {
@@ -37,14 +37,12 @@ public class EmployeeMapper implements EntityMapper<Employee, EmployeeCreateDTO,
         employee.setEmail(employeeCreateDTO.email());
         employee.setContract(employeeCreateDTO.contract());
         employee.setRegister(employeeCreateDTO.register());
+        employee.setType(employeeCreateDTO.employeeType());
         employee.setPassword(employeeCreateDTO.password());
         employee.setPcd(employeeCreateDTO.pcd());
         employee.setBirthday(employeeCreateDTO.birthday());
         employee.setGender(employeeCreateDTO.gender());
         employee.setActive(employeeCreateDTO.active());
-
-        employee.setCompany(company);
-        employee.setRole(role);
 
         return employee;
     }
@@ -62,22 +60,21 @@ public class EmployeeMapper implements EntityMapper<Employee, EmployeeCreateDTO,
         boolean active = employee.isActive();
 
         CompanySummaryDTO company = companySummaryConverter.toSummaryDTO(employee.getCompany());
-
         RoleSummaryDTO role = roleSummaryConverter.toSummaryDTO(employee.getRole());
+        List<ProjectSummaryDTO> projects = projectSummaryConverter.toSummaryListDTO(employee.getProjects());
 
-        return new EmployeeResponseDTO(id, name, email, contract, register, pcd, birthday, gender, active,
-                company, role);
-    }
-
-    @Override
-    public Page<EmployeeResponseDTO> toDTOPageResponse(Page<Employee> employees) {
-        return employees.map(this::toDTOResponse);
-    }
-
-    @Override
-    public List<EmployeeResponseDTO> toDTOListResponse(Collection<Employee> employees) {
-        return employees.stream()
-                .map(this::toDTOResponse)
-                .collect(Collectors.toList());
+        return new EmployeeResponseDTO(
+                id,
+                name,
+                email,
+                contract,
+                register,
+                pcd,
+                birthday,
+                gender,
+                active,
+                company,
+                role,
+                projects);
     }
 }

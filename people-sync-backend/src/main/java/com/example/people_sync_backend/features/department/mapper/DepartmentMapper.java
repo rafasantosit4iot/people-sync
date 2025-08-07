@@ -1,11 +1,8 @@
 package com.example.people_sync_backend.features.department.mapper;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.example.people_sync_backend.features.company.mapper.CompanySummaryConverter;
@@ -15,13 +12,13 @@ import com.example.people_sync_backend.features.department.model.dto.request.Dep
 import com.example.people_sync_backend.features.department.model.dto.response.DepartmentResponseDTO;
 import com.example.people_sync_backend.features.role.mapper.RoleSummaryConverter;
 import com.example.people_sync_backend.features.role.model.dto.response.RoleSummaryDTO;
-import com.example.people_sync_backend.shared.interfaces.EntityMapper;
+import com.example.people_sync_backend.shared.classes.EntityMapper;
 
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class DepartmentMapper implements EntityMapper<Department, DepartmentCreateDTO, DepartmentResponseDTO> {
+public class DepartmentMapper extends EntityMapper<Department, DepartmentCreateDTO, DepartmentResponseDTO> {
 
     private final RoleSummaryConverter roleSummaryConverter;
     private final CompanySummaryConverter companySummaryConverter;
@@ -44,17 +41,5 @@ public class DepartmentMapper implements EntityMapper<Department, DepartmentCrea
         List<CompanySummaryDTO> companies = companySummaryConverter.toSummaryListDTO(department.getCompanies());
 
         return new DepartmentResponseDTO(id, title, roles, companies);
-    }
-
-    @Override
-    public Page<DepartmentResponseDTO> toDTOPageResponse(Page<Department> departments) {
-        return departments.map(this::toDTOResponse);
-    }
-
-    @Override
-    public List<DepartmentResponseDTO> toDTOListResponse(Collection<Department> departments) {
-        return departments.stream()
-                .map(this::toDTOResponse)
-                .collect(Collectors.toList());
     }
 }

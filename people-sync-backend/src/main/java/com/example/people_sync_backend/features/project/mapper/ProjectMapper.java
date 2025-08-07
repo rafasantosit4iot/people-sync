@@ -1,11 +1,8 @@
 package com.example.people_sync_backend.features.project.mapper;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.example.people_sync_backend.features.employee.mapper.EmployeeSummaryConverter;
@@ -15,13 +12,13 @@ import com.example.people_sync_backend.features.project.model.dto.request.Projec
 import com.example.people_sync_backend.features.project.model.dto.response.ProjectResponseDTO;
 import com.example.people_sync_backend.features.time_entry.mapper.TimeEntrySummaryConverter;
 import com.example.people_sync_backend.features.time_entry.model.dto.response.TimeEntrySummaryDTO;
-import com.example.people_sync_backend.shared.interfaces.EntityMapper;
+import com.example.people_sync_backend.shared.classes.EntityMapper;
 
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class ProjectMapper implements EntityMapper<Project, ProjectCreateDTO, ProjectResponseDTO> {
+public class ProjectMapper extends EntityMapper<Project, ProjectCreateDTO, ProjectResponseDTO> {
 
     private final EmployeeSummaryConverter employeeSummaryConverter;
     private final TimeEntrySummaryConverter timeEntrySummaryConverter;
@@ -33,6 +30,7 @@ public class ProjectMapper implements EntityMapper<Project, ProjectCreateDTO, Pr
         project.setName(projectCreateDTO.name());
         project.setTag(projectCreateDTO.tag());
         project.setDescription(projectCreateDTO.description());
+        project.setFinalized(projectCreateDTO.finalized());
 
         return project;
     }
@@ -49,17 +47,5 @@ public class ProjectMapper implements EntityMapper<Project, ProjectCreateDTO, Pr
         List<TimeEntrySummaryDTO> timeEntries = timeEntrySummaryConverter.toSummaryListDTO(project.getTimeEntries());
 
         return new ProjectResponseDTO(id, name, tag, description, finalized, employees, timeEntries);
-    }
-
-    @Override
-    public Page<ProjectResponseDTO> toDTOPageResponse(Page<Project> projects) {
-        return projects.map(this::toDTOResponse);
-    }
-
-    @Override
-    public List<ProjectResponseDTO> toDTOListResponse(Collection<Project> projects) {
-        return projects.stream()
-                .map(this::toDTOResponse)
-                .collect(Collectors.toList());
     }
 }
