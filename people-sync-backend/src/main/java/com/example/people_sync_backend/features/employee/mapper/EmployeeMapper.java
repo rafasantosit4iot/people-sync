@@ -17,6 +17,8 @@ import com.example.people_sync_backend.features.project.mapper.ProjectSummaryCon
 import com.example.people_sync_backend.features.project.model.dto.response.ProjectSummaryDTO;
 import com.example.people_sync_backend.features.role.mapper.RoleSummaryConverter;
 import com.example.people_sync_backend.features.role.model.dto.response.RoleSummaryDTO;
+import com.example.people_sync_backend.features.time_entry.mapper.TimeEntrySummaryConverter;
+import com.example.people_sync_backend.features.time_entry.model.dto.response.TimeEntrySummaryDTO;
 import com.example.people_sync_backend.shared.classes.EntityMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class EmployeeMapper extends EntityMapper<Employee, EmployeeCreateDTO, Em
     private final CompanySummaryConverter companySummaryConverter;
     private final RoleSummaryConverter roleSummaryConverter;
     private final ProjectSummaryConverter projectSummaryConverter;
+    private final TimeEntrySummaryConverter timeEntrySummaryConverter;
 
     @Override
     public Employee toEntity(EmployeeCreateDTO employeeCreateDTO) {
@@ -62,6 +65,7 @@ public class EmployeeMapper extends EntityMapper<Employee, EmployeeCreateDTO, Em
         CompanySummaryDTO company = companySummaryConverter.toSummaryDTO(employee.getCompany());
         RoleSummaryDTO role = roleSummaryConverter.toSummaryDTO(employee.getRole());
         List<ProjectSummaryDTO> projects = projectSummaryConverter.toSummaryListDTO(employee.getProjects());
+        List<TimeEntrySummaryDTO> timeEntries = timeEntrySummaryConverter.toSummaryListDTO(employee.getTimeEntries());
 
         return new EmployeeResponseDTO(
                 id,
@@ -75,6 +79,7 @@ public class EmployeeMapper extends EntityMapper<Employee, EmployeeCreateDTO, Em
                 active,
                 company,
                 role,
-                projects);
+                projects,
+                timeEntries);
     }
 }

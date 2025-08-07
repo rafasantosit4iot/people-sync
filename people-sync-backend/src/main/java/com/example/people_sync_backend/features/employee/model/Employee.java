@@ -11,6 +11,7 @@ import com.example.people_sync_backend.features.employee.model.enums.EmployeeGen
 import com.example.people_sync_backend.features.employee.model.enums.EmployeeType;
 import com.example.people_sync_backend.features.project.model.Project;
 import com.example.people_sync_backend.features.role.model.Role;
+import com.example.people_sync_backend.features.time_entry.model.TimeEntry;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,6 +22,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -78,4 +80,6 @@ public class Employee {
     @ManyToMany(mappedBy = "employees")
     private Set<Project> projects = new HashSet<>();
 
+    @OneToMany(mappedBy="employee")
+    private Set<TimeEntry> timeEntries = new HashSet<>();
 }

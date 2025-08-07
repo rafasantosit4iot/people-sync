@@ -9,6 +9,7 @@ import com.example.people_sync_backend.features.employee.model.enums.ContractTyp
 import com.example.people_sync_backend.features.employee.model.enums.EmployeeGender;
 import com.example.people_sync_backend.features.project.model.dto.response.ProjectSummaryDTO;
 import com.example.people_sync_backend.features.role.model.dto.response.RoleSummaryDTO;
+import com.example.people_sync_backend.features.time_entry.model.dto.response.TimeEntrySummaryDTO;
 
 public record EmployeeResponseDTO(
         UUID id,
@@ -22,6 +23,7 @@ public record EmployeeResponseDTO(
         boolean active,
         CompanySummaryDTO company,
         RoleSummaryDTO role,
-        List<ProjectSummaryDTO> projects) {
+        List<ProjectSummaryDTO> projects,
+                        List<TimeEntrySummaryDTO> timeEntries) {
 
 }
