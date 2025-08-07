@@ -37,6 +37,6 @@ public class Department {
     @OneToMany(mappedBy = "department")
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(mappedBy="departments")
+    @ManyToMany
     private Set<Company> companies;
 }
