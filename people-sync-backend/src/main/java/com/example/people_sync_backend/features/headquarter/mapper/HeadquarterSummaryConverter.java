@@ -1,17 +1,13 @@
 package com.example.people_sync_backend.features.headquarter.mapper;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Component;
 
 import com.example.people_sync_backend.features.headquarter.model.Headquarter;
 import com.example.people_sync_backend.features.headquarter.model.dto.response.HeadquarterSummaryDTO;
-import com.example.people_sync_backend.shared.interfaces.EntitySummaryConverter;
+import com.example.people_sync_backend.shared.classes.EntitySummaryConverter;
 
 @Component
-public class HeadquarterSummaryConverter implements EntitySummaryConverter<Headquarter, HeadquarterSummaryDTO> {
+public class HeadquarterSummaryConverter extends EntitySummaryConverter<Headquarter, HeadquarterSummaryDTO> {
 
     @Override
     public HeadquarterSummaryDTO toSummaryDTO(Headquarter headquarter) {
@@ -22,12 +18,5 @@ public class HeadquarterSummaryConverter implements EntitySummaryConverter<Headq
                 headquarter.getNumber(),
                 headquarter.getCompany().getName(),
                 headquarter.getCountry().getName());
-    }
-
-    @Override
-    public List<HeadquarterSummaryDTO> toSummaryListDTO(Collection<Headquarter> headquarters) {
-        return headquarters.stream()
-                .map(this::toSummaryDTO)
-                .collect(Collectors.toList());
     }
 }
