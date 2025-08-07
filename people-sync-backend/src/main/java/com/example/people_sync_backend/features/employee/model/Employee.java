@@ -15,6 +15,8 @@ import com.example.people_sync_backend.features.time_entry.model.TimeEntry;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -46,12 +48,14 @@ public class Employee {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ContractType contract;
 
     @Column(unique = true, nullable = false)
     private String register;
-
+    
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EmployeeType type;
 
@@ -63,6 +67,7 @@ public class Employee {
     @Column(nullable = false)
     private LocalDate birthday;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EmployeeGender gender;
 
@@ -77,7 +82,7 @@ public class Employee {
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
-    @ManyToMany(mappedBy = "employees")
+    @ManyToMany
     private Set<Project> projects = new HashSet<>();
 
     @OneToMany(mappedBy="employee")
