@@ -1,8 +1,8 @@
 package com.example.people_sync_backend.features.time_entry.model.dto.request;
 
 import java.security.Timestamp;
+import java.util.UUID;
 
-import org.hibernate.validator.constraints.UUID;
 
 public record TimeEntryCreateDTO(
         Timestamp openTimestamp,
