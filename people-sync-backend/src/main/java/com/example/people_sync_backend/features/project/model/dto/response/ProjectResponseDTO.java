@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.example.people_sync_backend.features.employee.model.dto.response.EmployeeSummaryDTO;
+import com.example.people_sync_backend.features.time_entry.model.dto.response.TimeEntrySummaryDTO;
 
 public record ProjectResponseDTO(
         UUID id,
@@ -12,6 +13,6 @@ public record ProjectResponseDTO(
         String description,
         boolean finalized,
         List<EmployeeSummaryDTO> employees,
-        List<TimeentrySummaryDTO> timeEntries) {
+        List<TimeEntrySummaryDTO> timeEntries) {
 
 }
