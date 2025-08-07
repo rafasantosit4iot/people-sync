@@ -53,7 +53,6 @@ public class Employee {
     @Column(nullable = false)
     private EmployeeType type;
 
-    @Column(unique = true)
     private String password;
 
     @Column(nullable = false)
@@ -76,7 +75,7 @@ public class Employee {
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
-    @ManyToMany(mappedBy="employees")
+    @ManyToMany(mappedBy = "employees")
     private Set<Project> projects = new HashSet<>();
 
 }
