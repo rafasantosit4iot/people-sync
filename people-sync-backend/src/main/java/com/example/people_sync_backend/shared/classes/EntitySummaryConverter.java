@@ -4,11 +4,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class EntitySummaryConverter<BaseEntity, SummaryEntity> {
+public abstract class EntitySummaryConverter<Base, Summary> {
 
-    public abstract SummaryEntity toSummaryDTO(BaseEntity entity);
+    public abstract Summary toSummaryDTO(Base entity);
 
-    public List<SummaryEntity> toSummaryListDTO(Collection<BaseEntity> entityCollection) {
+    public List<Summary> toSummaryListDTO(Collection<Base> entityCollection) {
         return entityCollection.stream()
                 .map(this::toSummaryDTO)
                 .collect(Collectors.toList());
