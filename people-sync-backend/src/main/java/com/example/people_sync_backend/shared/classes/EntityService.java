@@ -6,11 +6,14 @@ import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import jakarta.persistence.EntityNotFoundException;
+import com.example.people_sync_backend.shared.classes.errors.GlobalNotFoundException;
+import com.example.people_sync_backend.shared.interfaces.CrudService;
 
-public abstract class EntityService<BaseEntity, CreateEntity, ResponseEntity, Repository extends JpaRepository<BaseEntity, UUID>, Mapper extends EntityMapper<BaseEntity, CreateEntity, ResponseEntity>> {
+
+public abstract class EntityService<Base, Create, Response, Repository extends JpaRepository<Base, UUID>, Mapper extends EntityMapper<Base, Create, Response>> implements CrudService<Create, Response> {
 
     protected final Repository entityRepository;
     protected final Mapper entityMapper;
@@ -20,47 +23,56 @@ public abstract class EntityService<BaseEntity, CreateEntity, ResponseEntity, Re
         this.entityMapper = entityMapper;
     }
 
-    public ResponseEntity getEntityById(UUID entityId) {
-        BaseEntity entitySearched = entityRepository.findById(entityId)
-                .orElseThrow(() -> new EntityNotFoundException("Não encontrado"));
+    @Override
+    public Response getEntityById(UUID entityId) {
+        Base entitySearched = entityRepository.findById(entityId).orElseThrow(GlobalNotFoundException::new);
         return entityMapper.toDTOResponse(entitySearched);
     }
 
-    public List<ResponseEntity> getAllEntityList() {
-        List<BaseEntity> entities = entityRepository.findAll();
+    @Override
+    public List<Response> getAllEntityList() {
+        List<Base> entities = entityRepository.findAll();
         return entityMapper.toDTOListResponse(entities);
     }
 
-    public Page<ResponseEntity> getEntityPage(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<BaseEntity> companies = entityRepository.findAll(pageable);
-        return entityMapper.toDTOPageResponse(companies);
+    @Override
+    public Page<Response> getEntityPage(int pageNumber, int pageSize, Sort sort) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Page<Base> entities = entityRepository.findAll(pageable);
+        return entityMapper.toDTOPageResponse(entities);
     }
 
-    public ResponseEntity createEntity(CreateEntity createEntity) {
-        BaseEntity entity = entityMapper.toEntity(createEntity);
+    @Override
+    public Response createEntity(Create createEntity) {
+        Base entity = entityMapper.toEntity(createEntity);
         entity = validateBeforeSave(entity, createEntity);
         entity = entityRepository.save(entity);
         return entityMapper.toDTOResponse(entity);
     }
     
-    public ResponseEntity updateEntity(UUID entityId, CreateEntity createEntity) {
+    @Override
+    public Response updateEntity(UUID entityId, Create createEntity) {
 
-        if (!entityRepository.findById(entityId).isPresent()) {
-            throw new EntityNotFoundException("Não encontrado");
+        if (!entityRepository.existsById(entityId)) {
+            throw new GlobalNotFoundException();
         }
         
-        BaseEntity entity = entityMapper.toEntity(createEntity);
+        Base entity = entityMapper.toEntity(createEntity);
         entity = validateBeforeSave(entity, createEntity);
         entity = entityRepository.save(entity);
         return entityMapper.toDTOResponse(entity);
     }
-
+    
+    @Override
     public void deleteEntity(UUID entityId) {
+        if (!entityRepository.existsById(entityId)) {
+            throw new GlobalNotFoundException();
+        }
+
         entityRepository.deleteById(entityId);
     }
 
-    protected BaseEntity validateBeforeSave(BaseEntity entity, CreateEntity createEntity) {
+    protected Base validateBeforeSave(Base entity, Create createEntity) {
         return entity;
     }
 }
