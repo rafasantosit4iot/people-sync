@@ -12,6 +12,6 @@ public class DepartmentSummaryConverter extends EntitySummaryConverter<Departmen
     public DepartmentSummaryDTO toSummaryDTO(Department department) {
         return new DepartmentSummaryDTO(
                 department.getId(),
-                department.getTitle());
+                department.getName());
     }
 }

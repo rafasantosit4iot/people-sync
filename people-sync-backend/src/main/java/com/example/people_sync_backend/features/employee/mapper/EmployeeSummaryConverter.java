@@ -23,6 +23,6 @@ public class EmployeeSummaryConverter extends EntitySummaryConverter<Employee, E
                 employee.isActive(),
                 employee.getCompany().getName(),
                 employee.getRole().getName(),
-                employee.getRole().getDepartment().getTitle());
+                employee.getRole().getDepartment().getName());
     }
 }

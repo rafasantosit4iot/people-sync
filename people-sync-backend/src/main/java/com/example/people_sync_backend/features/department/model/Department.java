@@ -32,7 +32,7 @@ public class Department {
     private UUID id;
 
     @Column(unique = true, nullable = false, length=150)
-    private String title;
+    private String name;
 
     @OneToMany(mappedBy = "department")
     private Set<Role> roles = new HashSet<>();

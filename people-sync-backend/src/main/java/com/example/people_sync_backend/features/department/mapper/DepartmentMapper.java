@@ -27,7 +27,7 @@ public class DepartmentMapper extends EntityMapper<Department, DepartmentCreateD
     public Department toEntity(DepartmentCreateDTO departmentCreateDTO) {
         Department department = new Department();
 
-        department.setTitle(departmentCreateDTO.title());
+        department.setName(departmentCreateDTO.name());
         
         return department;
     }
@@ -35,11 +35,11 @@ public class DepartmentMapper extends EntityMapper<Department, DepartmentCreateD
     @Override
     public DepartmentResponseDTO toDTOResponse(Department department) {
         UUID id = department.getId();
-        String title = department.getTitle();
+        String name = department.getName();
 
         List<RoleSummaryDTO> roles = roleSummaryConverter.toSummaryListDTO(department.getRoles());
         List<CompanySummaryDTO> companies = companySummaryConverter.toSummaryListDTO(department.getCompanies());
 
-        return new DepartmentResponseDTO(id, title, roles, companies);
+        return new DepartmentResponseDTO(id, name, roles, companies);
     }
 }

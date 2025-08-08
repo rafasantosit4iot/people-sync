@@ -14,6 +14,6 @@ public class RoleSummaryConverter extends EntitySummaryConverter<Role, RoleSumma
         return new RoleSummaryDTO(
                 role.getId(),
                 role.getName(),
-                role.getDepartment().getTitle());
+                role.getDepartment().getName());
     }
 }

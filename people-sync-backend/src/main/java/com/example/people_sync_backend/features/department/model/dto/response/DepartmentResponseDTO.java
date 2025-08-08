@@ -8,7 +8,7 @@ import com.example.people_sync_backend.features.role.model.dto.response.RoleSumm
 
 public record DepartmentResponseDTO(
         UUID id,
-        String title,
+        String name,
         List<RoleSummaryDTO> roles,
         List<CompanySummaryDTO> companies) {
 
